@@ -61,9 +61,9 @@ class WeatherService {
   }
 
   //creates buildGeocodeQuery method
-  private buildGeocodeQuery(): string {
-    return `${this.baseURL}/weather?q=${this.cityName}&appid=${this.APIKey}`;
-  }
+  //private buildGeocodeQuery(): string {
+    //return `${this.baseURL}/weather?q=${this.cityName}&appid=${this.APIKey}`;
+  //}
 
   //creates buildWeatherQuery method
   private buildWeatherQuery(coordinates: Coordinates): string {
