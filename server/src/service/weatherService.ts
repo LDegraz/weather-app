@@ -7,6 +7,10 @@ interface Coordinates {
   lat: number;
   lon: number;
 }
+
+// { city, date, icon, iconDescription, tempF, windSpeed, humidity }
+
+
 // TODO: Define a class for the Weather object
   //defines a class for the Weather object
 class Weather {
@@ -67,7 +71,8 @@ class WeatherService {
 
   //creates buildWeatherQuery method
   private buildWeatherQuery(coordinates: Coordinates): string {
-    return `${this.baseURL}/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=minutely,hourly&appid=${this.APIKey}`;
+    return `${this.baseURL}/forecast?units=imperial&lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=minutely,hourly&appid=${this.APIKey}`;
+    //return `${this.baseURL}/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=minutely,hourly&appid=${this.APIKey}`;
   }
 
   //creates fetchAndDestructureLocationData method
@@ -79,6 +84,7 @@ class WeatherService {
   //creates fetchWeatherData method
   private async fetchWeatherData(coordinates: Coordinates) {
     const url = this.buildWeatherQuery(coordinates);
+    //console.log('testing if this works', url);
     const response = await fetch(url);
     const data = await response.json();
     return data;
@@ -86,6 +92,7 @@ class WeatherService {
 
   //builds parseCurrentWeather method
   private parseCurrentWeather(response: any): Weather {
+    //console.log('testing if this works', response);
     const { name: city, main: { temp, humidity }, wind: { speed: windSpeed }, uvi: uvIndex, weather } = response;
     const icon = weather[0].icon;
     return new Weather(city, temp, humidity, windSpeed, uvIndex, icon);
@@ -105,9 +112,11 @@ class WeatherService {
     this.cityName = city;
     const coordinates = await this.fetchAndDestructureLocationData();
     const weatherData = await this.fetchWeatherData(coordinates);
-    const currentWeather = this.parseCurrentWeather(weatherData.current);
-    const forecastArray = this.buildForecastArray(currentWeather, weatherData.daily);
-    return { currentWeather, forecastArray };
+    //console.log('testing if this works', weatherData);
+    const currentWeather = this.parseCurrentWeather(weatherData.list[0]);
+    const forecastArray = this.buildForecastArray(currentWeather, weatherData.list.slice(1));
+    //return { currentWeather, forecastArray };
+    return [currentWeather, ...forecastArray];
   }
 }
 

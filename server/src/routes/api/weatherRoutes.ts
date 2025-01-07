@@ -7,8 +7,9 @@ import WeatherService from '../../service/weatherService.js';
 // TODO: POST Request with city name to retrieve weather data
   //POST Request with city name to retrieve weather data
 router.post('/', async (req: Request, res: Response): Promise<void> => {
+  console.log(req.body); 
   try {
-    const { city } = req.body;
+    const { cityName:city } = req.body;
     if (!city || typeof city !== 'string') {
       res.status(400).json({ error: 'City name must be a string' });
       return;
@@ -18,7 +19,7 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
       res.status(404).json({ error: 'Weather data not found' });
       return;
     }
-    res.status(200).json({ message: 'Weather data retrieved successfully', weatherData });
+    res.status(200).json(weatherData);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to retrieve weather data' });
