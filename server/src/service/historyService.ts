@@ -1,5 +1,5 @@
 import fs from 'fs';
-import path from 'path';
+//import path from 'path';
 
 // TODO: Define a City class with name and id properties
 // TODO: Complete the HistoryService class
@@ -12,7 +12,7 @@ class City {
   //completes the HistoryService class
 class HistoryService {
   // Defines the path to the searchHistory.json file
-  private filePath = path.join(__dirname, 'searchHistory.json');
+  private filePath = 'db/searchHistory.json';
 
   // Completes the read method
   private async read(): Promise<City[]> {
